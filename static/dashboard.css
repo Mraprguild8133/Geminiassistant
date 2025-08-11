@@ -1,0 +1,231 @@
+/* Advanced Dashboard Styles */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-primary: #2c3e50;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+}
+
+body {
+    background: var(--primary-gradient);
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-primary);
+}
+
+/* Glass morphism effect */
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 35px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Status indicators */
+.status-online {
+    background: linear-gradient(45deg, var(--success-color), #20c997);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.status-offline {
+    background: linear-gradient(45deg, var(--danger-color), #e74c3c);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+}
+
+/* Metric cards */
+.metric-card {
+    background: var(--card-bg);
+    border: none;
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--info-color), var(--success-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.metric-card:hover::before {
+    opacity: 1;
+}
+
+.metric-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.metric-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Progress bars with animations */
+.animated-progress {
+    height: 8px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.animated-progress .progress-bar {
+    border-radius: 10px;
+    transition: width 1s ease-in-out;
+    background: linear-gradient(45deg, var(--info-color), var(--success-color));
+    position: relative;
+    overflow: hidden;
+}
+
+.animated-progress .progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, .2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, .2) 50%,
+        rgba(255, 255, 255, .2) 75%,
+        transparent 75%,
+        transparent
+    );
+    background-size: 30px 30px;
+    animation: move 2s linear infinite;
+}
+
+@keyframes move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 30px 30px;
+    }
+}
+
+/* API endpoint cards */
+.api-endpoint {
+    background: var(--card-bg);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.api-endpoint:hover {
+    border-color: var(--info-color);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(23, 162, 184, 0.15);
+    text-decoration: none;
+    color: inherit;
+}
+
+.api-method {
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.8rem;
+    background: #f8f9fa;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .metric-card {
+        padding: 1.5rem;
+    }
+    
+    .metric-value {
+        font-size: 2rem;
+    }
+    
+    .metric-icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* Loading animations */
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Success/error states */
+.success-glow {
+    box-shadow: 0 0 20px rgba(40, 167, 69, 0.3);
+    border: 2px solid var(--success-color);
+}
+
+.error-glow {
+    box-shadow: 0 0 20px rgba(220, 53, 69, 0.3);
+    border: 2px solid var(--danger-color);
+}
