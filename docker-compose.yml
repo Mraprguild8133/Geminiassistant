@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  telegram-bot:
+    build: .
+    container_name: gemini-telegram-bot
+    restart: unless-stopped
+    ports:
+      - "5000:5000"  # Webhook server port
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ADMIN_ID=${ADMIN_ID}
+      - WEBHOOK_URL=${WEBHOOK_URL:-}
+    volumes:
+      - ./logs:/app/logs
+      - ./generated_images:/app/generated_images
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s  # Allow time for both services to start
+    networks:
+      - bot-network
+    labels:
+      - "description=Advanced Telegram Bot with Gemini AI"
+      - "service.bot=telegram-polling"
+      - "service.webhook=flask-server-port-5000"
+      - "simultaneous.services=both-running-together"
+
+  # Optional: Nginx reverse proxy for production
+  nginx:
+    image: nginx:alpine
+    container_name: bot-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - telegram-bot
+    networks:
+      - bot-network
+    profiles:
+      - production  # Only start with --profile production
+
+networks:
+  bot-network:
+    driver: bridge
+    labels:
+      - "description=Network for Telegram Bot services"
